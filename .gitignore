@@ -1,6 +1,6 @@
 __pycache__/
 experiments/
-.DS_Store/
+eye_gaze_tracker/.DS_Store
 
 #ignore data
 data.h5
