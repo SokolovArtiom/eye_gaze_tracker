@@ -17,8 +17,8 @@ def parse_args(args):
         default="weights/mobile_net_small100_00067.pth",
     )
     parser.add_argument("--input_path", type=str, default="test/images/")
-    parser.add_argument("--output_path", type=str, default="test/result/")
-    parser.add_argument("--device", type=str, default="cuda:0")
+    parser.add_argument("--output_path", type=str, default="test/results/")
+    parser.add_argument("--device", type=str, default="cpu")
     return parser.parse_args(args)
 
 

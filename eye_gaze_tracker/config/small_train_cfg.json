@@ -19,7 +19,7 @@
 "batch_size":256,
 "num_workers": 0,
 
-"device": "cuda:0",
+"device": "cpu",
 "seed": 42,
 
 "unique_name": "MobileNetV3_small_dataset(not_for_use)",
