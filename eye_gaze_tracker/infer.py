@@ -51,6 +51,8 @@ def main(args=None):
     for k in vars(args):
         print(f"{k} : {getattr(args, k)}")
 
+    os.mkdir(args.output_path)
+
     fa = face_alignment.FaceAlignment(
         face_alignment.LandmarksType.TWO_D,
         flip_input=False,
