@@ -46,7 +46,7 @@ class Trainer:
         os.makedirs(
             os.path.join(
                 self.cfg["output_directory"],
-                "models/{}/".format(self.cfg["model_name"]),
+                "{}/".format(self.cfg["model_name"]),
             ),
             exist_ok=True,
         )

@@ -4,8 +4,8 @@ import os
 import cv2
 import face_alignment
 import numpy as np
-import tqdm
 from src.EyeGaze import GazeModel
+from tqdm import tqdm
 
 
 def parse_args(args):

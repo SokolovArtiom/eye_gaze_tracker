@@ -21,7 +21,7 @@ class GazeModel:
         else:
             raise "model is not supported"
 
-        self.model.load_state_dict(torch.load(weights_path))
+        self.model.load_state_dict(torch.load(weights_path, map_location=device))
         self.model.to(device)
         self.model.eval()
 

@@ -17,7 +17,7 @@
 "patience" : 5,
 
 "batch_size":256,
-"num_workers": 6,
+"num_workers": 0,
 
 "device": "cuda:0",
 "seed": 42,
@@ -25,7 +25,7 @@
 "unique_name": "MobileNetV3_small_dataset(not_for_use)",
 "output_directory": "experiments/",
 
-"data_path":"small_data/data.h5",
+"data_path":"data/small_data.h5",
 
 "out_dims": 1
 }
