@@ -1,8 +1,10 @@
 import argparse
+import os
 
 import cv2
 import face_alignment
 import numpy as np
+import tqdm
 from src.EyeGaze import GazeModel
 
 
@@ -14,8 +16,8 @@ def parse_args(args):
         type=str,
         default="weights/mobile_net_small100_00067.pth",
     )
-    parser.add_argument("--input_path", type=str, default="test/images/test.jpg")
-    parser.add_argument("--output_path", type=str, default="test/result/test.jpg")
+    parser.add_argument("--input_path", type=str, default="test/images/")
+    parser.add_argument("--output_path", type=str, default="test/result/")
     parser.add_argument("--device", type=str, default="cuda:0")
     return parser.parse_args(args)
 
@@ -44,6 +46,7 @@ def find_gaze(img, gaze_model, landmark, eye_points):
 
 
 def main(args=None):
+    print("Loading models...")
     args = parse_args(args)
     for k in vars(args):
         print(f"{k} : {getattr(args, k)}")
@@ -57,41 +60,44 @@ def main(args=None):
         args.eye_gaze_backbone, args.eye_gaze_model_weights, args.device
     )
 
-    img = cv2.imread(args.input_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img, (256, 256))
+    print("Processing data...")
 
-    landmark = fa.get_landmarks(img)[0]
+    for imname in tqdm(os.listdir(args.input_path)):
+        img = cv2.imread(f"{args.input_path}/{imname}")
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (256, 256))
 
-    left_eye_points = [36, 37, 38, 39, 40, 41]
-    right_eye_points = [42, 43, 44, 45, 46, 47]
+        landmark = fa.get_landmarks(img)[0]
 
-    left_gaze = find_gaze(img, gaze_model, landmark, left_eye_points)
-    right_gaze = find_gaze(img, gaze_model, landmark, right_eye_points)
+        left_eye_points = [36, 37, 38, 39, 40, 41]
+        right_eye_points = [42, 43, 44, 45, 46, 47]
 
-    gaze = (left_gaze + right_gaze) / 2
+        left_gaze = find_gaze(img, gaze_model, landmark, left_eye_points)
+        right_gaze = find_gaze(img, gaze_model, landmark, right_eye_points)
 
-    left_eye_center = np.mean(landmark[left_eye_points], axis=0)
-    right_eye_center = np.mean(landmark[right_eye_points], axis=0)
+        gaze = (left_gaze + right_gaze) / 2
 
-    cv2.arrowedLine(
-        img,
-        left_eye_center.astype(np.int32),
-        (left_eye_center + gaze * 50).astype(np.int32),
-        [0, 0, 255],
-        2,
-    )
+        left_eye_center = np.mean(landmark[left_eye_points], axis=0)
+        right_eye_center = np.mean(landmark[right_eye_points], axis=0)
 
-    cv2.arrowedLine(
-        img,
-        right_eye_center.astype(np.int32),
-        (right_eye_center + gaze * 50).astype(np.int32),
-        [0, 0, 255],
-        2,
-    )
+        cv2.arrowedLine(
+            img,
+            left_eye_center.astype(np.int32),
+            (left_eye_center + gaze * 50).astype(np.int32),
+            [0, 0, 255],
+            2,
+        )
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    cv2.imwrite(args.output_path, img)
+        cv2.arrowedLine(
+            img,
+            right_eye_center.astype(np.int32),
+            (right_eye_center + gaze * 50).astype(np.int32),
+            [0, 0, 255],
+            2,
+        )
+
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(f"{args.output_path}/{imname}", img)
     print(f"Result saved to {args.output_path}")
 
 

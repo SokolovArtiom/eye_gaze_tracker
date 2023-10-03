@@ -51,23 +51,31 @@ class Trainer:
             exist_ok=True,
         )
 
+        best_val_loss = float("inf")
+        best_epoch = 0
+
         for epoch in range(1, self.cfg["epochs"] + 1):
             print("Epoch : {}".format(epoch))
             self._train_one_epoch(
                 epoch, model, train_dl, optimizer, criterion, scheduler
             )
 
-            torch.save(
-                model.state_dict(),
-                "{}/models/{}/{}_{}.pth".format(
-                    self.cfg["output_directory"],
-                    self.cfg["model_name"],
-                    self.cfg["unique_name"],
-                    epoch,
-                ),
-            )
-
             self._validate(epoch, model, val_dl, criterion, scheduler)
+
+            if self.cur_val_loss < best_val_loss:
+                torch.save(
+                    model.state_dict(),
+                    "{}/{}/best.pth".format(
+                        self.cfg["output_directory"], self.cfg["model_name"]
+                    ),
+                )
+
+                best_val_loss = self.cur_val_loss
+                best_epoch = epoch
+
+        print(
+            f"Training finished \n Best model's MSE = {best_val_loss} on epoch {best_epoch}."
+        )
 
     def _train_one_epoch(self, epoch, model, train_dl, optimizer, criterion, scheduler):
         model.train()

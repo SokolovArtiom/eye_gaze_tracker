@@ -6,7 +6,7 @@ from src.Trainer import Trainer
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description="Choose config: ")
-    parser.add_argument("--config", type=str, default="configs/configs")
+    parser.add_argument("--config", type=str, default="config/small_train_cfg.json")
     return parser.parse_args(args)
 
 
