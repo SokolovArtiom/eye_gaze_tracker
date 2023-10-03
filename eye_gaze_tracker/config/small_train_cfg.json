@@ -1,0 +1,31 @@
+{
+"model_name": "MobileNetV3",
+"optimizer": "Adam",
+"criterion": "MSE",
+
+"lr": 1e-4,
+"weight_decay": 1e-5,
+
+"epochs": 10,
+
+"scheduler": "ReduceLROnPlateau",
+"iters": 1400,
+"warmup": 280,
+"cycles": 0.5,
+"milestones" : [50, 100],
+"sch_gamma" : 0.1,
+"patience" : 5,
+
+"batch_size":256,
+"num_workers": 6,
+
+"device": "cuda:0",
+"seed": 42,
+
+"unique_name": "MobileNetV3_small_dataset(not_for_use)",
+"output_directory": "experiments/",
+
+"data_path":"small_data/data.h5",
+
+"out_dims": 1
+}

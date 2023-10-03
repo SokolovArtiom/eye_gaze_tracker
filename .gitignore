@@ -3,4 +3,5 @@ experiments/
 eye_gaze_tracker/.DS_Store
 
 #ignore data
-data.h5
+*.h5
+!small_data.h5

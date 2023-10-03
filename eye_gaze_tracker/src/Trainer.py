@@ -69,9 +69,6 @@ class Trainer:
 
             self._validate(epoch, model, val_dl, criterion, scheduler)
 
-    #             self.writer.add_scalar('MSE/train', self.cur_train_loss, epoch)
-    #             self.writer.add_scalar('MSE/val', self.cur_val_loss, epoch)
-
     def _train_one_epoch(self, epoch, model, train_dl, optimizer, criterion, scheduler):
         model.train()
         scaler = torch.cuda.amp.GradScaler()
