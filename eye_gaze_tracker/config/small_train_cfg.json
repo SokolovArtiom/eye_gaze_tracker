@@ -23,9 +23,9 @@
 "seed": 42,
 
 "unique_name": "MobileNetV3_small_dataset(not_for_use)",
-"output_directory": "experiments/",
+"output_directory": "eye_gaze_tracker/experiments/",
 
-"data_path":"data/small_data.h5",
+"data_path":"eye_gaze_tracker/data/small_data.h5",
 
 "out_dims": 1
 }

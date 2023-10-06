@@ -14,10 +14,14 @@ def parse_args(args):
     parser.add_argument(
         "--eye_gaze_model_weights",
         type=str,
-        default="weights/mobile_net_small100_00067.pth",
+        default="eye_gaze_tracker/weights/mobile_net_small100_00067.pth",
     )
-    parser.add_argument("--input_path", type=str, default="test/images/")
-    parser.add_argument("--output_path", type=str, default="test/results/")
+    parser.add_argument(
+        "--input_path", type=str, default="eye_gaze_tracker/test/images/"
+    )
+    parser.add_argument(
+        "--output_path", type=str, default="eye_gaze_tracker/test/results/"
+    )
     parser.add_argument("--device", type=str, default="cpu")
     return parser.parse_args(args)
 
