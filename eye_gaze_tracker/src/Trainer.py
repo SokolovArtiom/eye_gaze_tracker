@@ -79,22 +79,19 @@ class Trainer:
 
     def _train_one_epoch(self, epoch, model, train_dl, optimizer, criterion, scheduler):
         model.train()
-        scaler = torch.cuda.amp.GradScaler()
 
         train_loss = 0.0
 
         for step, (data, labels) in enumerate(tqdm.tqdm(train_dl)):
-            model.zero_grad()
+            optimizer.zero_grad()
 
             data = data.to(self.device)
             labels = torch.squeeze(labels).to(self.device)
-            with torch.cuda.amp.autocast():
-                predictions = torch.tanh(model(data))
-                loss = criterion(predictions, labels)
+            predictions = torch.tanh(model(data))
+            loss = criterion(predictions, labels)
 
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
+            loss.backward()
+            optimizer.step()
 
             with torch.no_grad():
                 train_loss += loss.item()
@@ -111,9 +108,8 @@ class Trainer:
             with torch.no_grad():
                 data = data.to(self.device)
                 labels = torch.squeeze(labels).to(self.device)
-                with torch.cuda.amp.autocast():
-                    predictions = torch.tanh(model(data))
-                    loss = criterion(predictions, labels)
+                predictions = torch.tanh(model(data))
+                loss = criterion(predictions, labels)
 
                 val_loss += loss.item()
 
